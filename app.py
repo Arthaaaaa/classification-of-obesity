@@ -1,12 +1,17 @@
 from flask import Flask, render_template, request
 import numpy as np
 import pickle
-
+import os
+print("FILES IN ROOT:", os.listdir('.'))
 app = Flask(__name__)
 
 # Load model dan scaler
-model = pickle.load(open('logistic_model.pkl', 'rb'))
-scaler = pickle.load(open('scaler.pkl', 'rb'))
+try:
+    model = pickle.load(open('logistic_model.pkl', 'rb'))
+    scaler = pickle.load(open('scaler.pkl', 'rb'))
+except Exception as e:
+    print("GAGAL LOAD MODEL:", e)
+
 
 # Mapping kategori → angka (HARUS SAMA DENGAN TRAINING)
 map_gender = {"Male": 1, "Female": 0}
