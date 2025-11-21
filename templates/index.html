@@ -1,229 +1,141 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction of Obesity Levels</title>
+    <title>Obesity Prediction</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #333;
+            font-family: Arial;
+            margin: 40px;
         }
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
-            width: 100%;
-            margin: 20px;
-        }
-        h2 {
-            text-align: center;
-            color: #0984e3;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #555;
+            width: 400px;
+            margin: auto;
         }
         input, select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #0984e3;
-            box-shadow: 0 0 5px rgba(9, 132, 227, 0.5);
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0;
         }
         button {
-            background: #0984e3;
+            padding: 10px;
+            width: 100%;
+            background: #007bff;
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-            width: 100%;
-            margin-top: 10px;
-        }
-        button:hover {
-            background: #74b9ff;
-        }
-        .result {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #d63031;
-        }
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 10px;
-            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Prediction of Obesity Levels</h2>
+    <h2>Obesity Level Prediction</h2>
 
     <form method="POST">
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <select name="gender" id="gender">
-                <option>Male</option>
-                <option>Female</option>
-            </select>
-        </div>
 
-        <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="number" name="age" id="age" required>
-        </div>
+        <label>Gender</label>
+        <select name="Gender">
+            <option>Male</option>
+            <option>Female</option>
+        </select>
 
-        <div class="form-group">
-            <label for="height">Height (m):</label>
-            <input type="number" step="0.01" name="height" id="height" required>
-        </div>
+        <label>Age</label>
+        <input type="number" name="Age" step="0.1" required>
 
-        <div class="form-group">
-            <label for="weight">Weight (kg):</label>
-            <input type="number" step="0.1" name="weight" id="weight" required>
-        </div>
+        <label>Height (m)</label>
+        <input type="number" name="Height" step="0.01" required>
 
-        <div class="form-group">
-            <label for="family">Family history of overweight:</label>
-            <select name="family" id="family">
-                <option>yes</option>
-                <option>no</option>
-            </select>
-        </div>
+        <label>Weight (kg)</label>
+        <input type="number" name="Weight" step="0.1" required>
 
-        <div class="form-group">
-            <label for="high_calorie">High caloric food consumption:</label>
-            <select name="high_calorie" id="high_calorie">
-                <option>yes</option>
-                <option>no</option>
-            </select>
-        </div>
+        <label>Family history of overweight</label>
+        <select name="FamilyHistory">
+            <option>yes</option>
+            <option>no</option>
+        </select>
 
-        <div class="form-group">
-            <label for="vegetables">Vegetable consumption frequency:</label>
-            <select name="vegetables" id="vegetables">
-                <option>never</option>
-                <option>sometimes</option>
-                <option>always</option>
-            </select>
-        </div>
+        <label>High caloric food consumption</label>
+        <select name="HighCaloricFood">
+            <option>yes</option>
+            <option>no</option>
+        </select>
 
-        <div class="form-group">
-            <label for="main_meals">Main meals frequency:</label>
-            <select name="main_meals" id="main_meals">
-                <option>1-2</option>
-                <option>3</option>
-                <option>more than 3</option>
-            </select>
-        </div>
+        <label>Vegetable consumption</label>
+        <select name="Vegetables">
+            <option>never</option>
+            <option>sometimes</option>
+            <option>always</option>
+        </select>
 
-        <div class="form-group">
-            <label for="snacks">Between-meal snacks:</label>
-            <select name="snacks" id="snacks">
-                <option>no</option>
-                <option>sometimes</option>
-                <option>frequently</option>
-                <option>always</option>
-            </select>
-        </div>
+        <label>Main meals</label>
+        <select name="MainMeals">
+            <option>1-2</option>
+            <option>3</option>
+            <option>more than 3</option>
+        </select>
 
-        <div class="form-group">
-            <label for="smoke">Smoking:</label>
-            <select name="smoke" id="smoke">
-                <option>yes</option>
-                <option>no</option>
-            </select>
-        </div>
+        <label>Snacks</label>
+        <select name="Snacks">
+            <option>no</option>
+            <option>sometimes</option>
+            <option>frequently</option>
+            <option>always</option>
+        </select>
 
-        <div class="form-group">
-            <label for="alcohol">Alcohol intake:</label>
-            <select name="alcohol" id="alcohol">
-                <option>no</option>
-                <option>sometimes</option>
-                <option>frequently</option>
-                <option>always</option>
-            </select>
-        </div>
+        <label>Smoking</label>
+        <select name="Smoking">
+            <option>yes</option>
+            <option>no</option>
+        </select>
 
-        <div class="form-group">
-            <label for="water">Daily water intake:</label>
-            <select name="water" id="water">
-                <option>1-2L</option>
-                <option>more than 2L</option>
-            </select>
-        </div>
+        <label>Alcohol</label>
+        <select name="Alcohol">
+            <option>I do not drink</option>
+            <option>sometimes</option>
+            <option>frequently</option>
+            <option>always</option>
+        </select>
 
-        <div class="form-group">
-            <label for="monitor">Monitor calories:</label>
-            <select name="monitor" id="monitor">
-                <option>yes</option>
-                <option>no</option>
-            </select>
-        </div>
+        <label>Daily water intake</label>
+        <select name="Water">
+            <option>Between 1 and 2 L</option>
+            <option>More than 2 L</option>
+        </select>
 
-        <div class="form-group">
-            <label for="exercise">Physical exercise:</label>
-            <select name="exercise" id="exercise">
-                <option>none</option>
-                <option>1-2 days</option>
-                <option>2-4 days</option>
-                <option>4-5 days</option>
-                <option>almost every day</option>
-            </select>
-        </div>
+        <label>Monitor calories</label>
+        <select name="Monitor">
+            <option>yes</option>
+            <option>no</option>
+        </select>
 
-        <div class="form-group">
-            <label for="devices">Device usage duration:</label>
-            <select name="devices" id="devices">
-                <option>0-2 hours</option>
-                <option>3-5 hours</option>
-                <option>more than 5 hours</option>
-            </select>
-        </div>
+        <label>Physical exercise</label>
+        <select name="Exercise">
+            <option>I do not have</option>
+            <option>1 or 2 days</option>
+            <option>2 or 4 days</option>
+            <option>4 or 5 days</option>
+            <option>almost every day</option>
+        </select>
 
-        <div class="form-group">
-            <label for="transport">Mode of transportation:</label>
-            <select name="transport" id="transport">
-                <option>car</option>
-                <option>motorcycle</option>
-                <option>public</option>
-                <option>walking</option>
-            </select>
-        </div>
+        <label>Device usage duration</label>
+        <select name="Devices">
+            <option>0-2 hours</option>
+            <option>3-5 hours</option>
+            <option>more than 5 hours</option>
+        </select>
+
+        <label>Transportation</label>
+        <select name="Transport">
+            <option>car</option>
+            <option>motorcycle</option>
+            <option>public</option>
+            <option>walking</option>
+        </select>
 
         <button type="submit">Predict</button>
     </form>
 
     {% if result %}
-    <div class="result">{{ result }}</div>
+    <h3>{{ result }}</h3>
     {% endif %}
 </div>
 
