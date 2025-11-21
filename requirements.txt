@@ -3,4 +3,4 @@ numpy
 scikit-learn==1.6.1
 gunicorn
 pandas
-imbalanced-learn
+imbalanced-learn==0.14.0
