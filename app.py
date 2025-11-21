@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import numpy as np
 import pickle
-import os
 
 app = Flask(__name__)
 
@@ -9,7 +8,7 @@ app = Flask(__name__)
 model = pickle.load(open('logistic_model.pkl', 'rb'))
 scaler = pickle.load(open('scaler.pkl', 'rb'))
 
-# Mapping kategori → angka (HARUS SAMA dengan training)
+# Mapping kategori → angka (HARUS SAMA DENGAN TRAINING)
 map_gender = {"Male": 1, "Female": 0}
 map_bin = {"yes": 1, "no": 0}
 
@@ -81,14 +80,12 @@ label_map = {
     4: "obesity_type_III"
 }
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     result = None
 
     if request.method == "POST":
 
-        # Ambil nilai dari form
         data = [
             map_gender[request.form['gender']],
             float(request.form['age']),
@@ -110,10 +107,8 @@ def index():
 
         data = np.array([data])
 
-        # Scaling
         data_scaled = scaler.transform(data)
 
-        # Prediksi
         pred_num = model.predict(data_scaled)[0]
         pred_label = label_map[pred_num]
 
@@ -121,8 +116,4 @@ def index():
 
     return render_template('index.html', result=result)
 
-
-
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host='0.0.0.0', port=port)
+# ❗❗ NO app.run() — Gunicorn will handle it.
