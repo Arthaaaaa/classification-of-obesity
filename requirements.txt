@@ -1,6 +1,6 @@
-flask==3.0.0
+flask==3.0.3
 numpy==1.26.4
 scikit-learn==1.6.1
-gunicorn==23.0.0
-pandas==2.1.4
-imbalanced-learn==0.14.0
+gunicorn==21.2.0
+pandas==2.2.2
+imbalanced-learn==0.12.2

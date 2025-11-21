@@ -5,12 +5,13 @@ import os
 
 app = Flask(__name__)
 
-# Load model dan scaler
-with open("logistic_model.pkl", "rb") as f:
-    model = pickle.load(f)
+try:
+    model = pickle.load(open('logistic_model.pkl', 'rb'))
+    scaler = pickle.load(open('scaler.pkl', 'rb'))
+except Exception as e:
+    print("ERROR LOADING MODEL:", e)
+    raise e
 
-with open("scaler.pkl", "rb") as f:
-    scaler = pickle.load(f)
 
 # Load label encoders
 with open("labelencoders.pkl", "rb") as f:
