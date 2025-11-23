@@ -46,7 +46,16 @@ def load_models():
         raise e
 
 # Load models at startup
+print("=" * 50, file=sys.stderr)
+print("Starting application...", file=sys.stderr)
+print(f"PORT: {os.environ.get('PORT', 'NOT SET')}", file=sys.stderr)
+sys.stderr.flush()
+
 load_models()
+
+print("Application ready to accept requests!", file=sys.stderr)
+print("=" * 50, file=sys.stderr)
+sys.stderr.flush()
 
 # Urutan fitur HARUS sama dengan training
 feature_order = [
@@ -80,9 +89,32 @@ def health():
 @app.route("/test")
 def test():
     """Simple test endpoint"""
-    print("Test endpoint called", file=sys.stderr)
+    print("=" * 50, file=sys.stderr)
+    print("TEST ENDPOINT CALLED!", file=sys.stderr)
+    print("=" * 50, file=sys.stderr)
     sys.stderr.flush()
-    return "<h1>Test Page - Application is Working!</h1><p>If you see this, Flask is running correctly.</p>", 200
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Test Page</title>
+        <style>
+            body { font-family: Arial; padding: 40px; background: #f0f0f0; }
+            .container { background: white; padding: 30px; border-radius: 10px; max-width: 600px; margin: 0 auto; }
+            h1 { color: #28a745; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>✅ Test Page - Application is Working!</h1>
+            <p>If you see this, Flask is running correctly.</p>
+            <p><strong>Status:</strong> All systems operational</p>
+            <p><a href="/">Go to Homepage</a> | <a href="/health">Health Check</a></p>
+        </div>
+    </body>
+    </html>
+    """
+    return html, 200
 
 @app.errorhandler(404)
 def not_found(error):
