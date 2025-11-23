@@ -141,15 +141,38 @@ def index():
             input_data = []
 
             for feature in feature_order:
-                value = request.form[feature]
+                value = request.form.get(feature, "").strip()
+                print(f"Processing {feature}: '{value}'", file=sys.stderr)
+                
+                if not value:
+                    raise ValueError(f"Field '{feature}' is required but empty")
 
                 # Jika kolom kategori → encode pakai LabelEncoder
                 if feature in le_dict:
-                    value = le_dict[feature].transform([value])[0]
+                    try:
+                        # Cek nilai yang valid untuk LabelEncoder ini
+                        valid_values = le_dict[feature].classes_
+                        print(f"  Valid values for {feature}: {valid_values}", file=sys.stderr)
+                        
+                        # Coba transform
+                        value = le_dict[feature].transform([value])[0]
+                        print(f"  Encoded to: {value}", file=sys.stderr)
+                    except ValueError as ve:
+                        error_msg = f"Invalid value '{value}' for field '{feature}'. "
+                        error_msg += f"Valid values are: {', '.join(valid_values)}"
+                        print(f"ERROR: {error_msg}", file=sys.stderr)
+                        sys.stderr.flush()
+                        raise ValueError(error_msg)
                 else:
-                    value = float(value)
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        raise ValueError(f"Field '{feature}' must be a number, got '{value}'")
 
                 input_data.append(value)
+
+            print(f"Input data prepared: {input_data}", file=sys.stderr)
+            sys.stderr.flush()
 
             # Convert to array
             input_data = np.array([input_data])
@@ -164,12 +187,16 @@ def index():
             result_label = le_dict["Obesity"].inverse_transform([pred_num])[0]
 
             result = f"Obesity Level Prediction Results: {result_label}"
+        except ValueError as ve:
+            print(f"VALIDATION ERROR: {ve}", file=sys.stderr)
+            sys.stderr.flush()
+            result = f"❌ Validation Error: {str(ve)}"
         except Exception as e:
             print(f"ERROR in prediction: {e}", file=sys.stderr)
             import traceback
             traceback.print_exc(file=sys.stderr)
             sys.stderr.flush()
-            result = f"Error: {str(e)}"
+            result = f"❌ Error: {str(e)}"
 
     try:
         print("Rendering template", file=sys.stderr)
