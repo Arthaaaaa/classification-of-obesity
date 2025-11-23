@@ -1,143 +1,365 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Obesity Prediction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obesity Level Prediction | Health Assessment</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial;
-            margin: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
         .container {
-            width: 400px;
-            margin: auto;
-        }
-        input, select {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
             width: 100%;
-            padding: 8px;
-            margin: 6px 0;
+            animation: slideUp 0.5s ease-out;
         }
-        button {
-            padding: 10px;
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        input[type="number"],
+        select {
             width: 100%;
-            background: #007bff;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            font-family: inherit;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .result-container h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .result-text {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .icon {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+            margin: 25px 0;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.2em;
+            margin: 25px 0 15px 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Obesity Level Prediction</h1>
+            <p>Assess your health status with AI-powered prediction</p>
+        </div>
 
-<div class="container">
-    <h2>Obesity Level Prediction</h2>
+        <form method="POST">
+            <div class="section-title">👤 Personal Information</div>
+            
+            <div class="form-group">
+                <label><span class="icon">👤</span>Gender</label>
+                <select name="Gender" required>
+                    <option value="">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+            </div>
 
-    <form method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label><span class="icon">🎂</span>Age</label>
+                    <input type="number" name="Age" step="0.1" min="0" max="120" placeholder="Enter age" required>
+                </div>
 
-        <label>Gender</label>
-        <select name="Gender">
-            <option>Male</option>
-            <option>Female</option>
-        </select>
+                <div class="form-group">
+                    <label><span class="icon">📏</span>Height (m)</label>
+                    <input type="number" name="Height" step="0.01" min="0.5" max="3.0" placeholder="e.g., 1.75" required>
+                </div>
+            </div>
 
-        <label>Age</label>
-        <input type="number" name="Age" step="0.1" required>
+            <div class="form-group">
+                <label><span class="icon">⚖️</span>Weight (kg)</label>
+                <input type="number" name="Weight" step="0.1" min="0" max="500" placeholder="Enter weight" required>
+            </div>
 
-        <label>Height (m)</label>
-        <input type="number" name="Height" step="0.01" required>
+            <div class="section-divider"></div>
+            <div class="section-title">🍽️ Dietary Habits</div>
 
-        <label>Weight (kg)</label>
-        <input type="number" name="Weight" step="0.1" required>
+            <div class="form-group">
+                <label><span class="icon">👨‍👩‍👧‍👦</span>Family history of overweight</label>
+                <select name="FamilyHistory" required>
+                    <option value="">Select option</option>
+                    <option>yes</option>
+                    <option>no</option>
+                </select>
+            </div>
 
-        <label>Family history of overweight</label>
-        <select name="FamilyHistory">
-            <option>yes</option>
-            <option>no</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">🍔</span>High caloric food consumption</label>
+                <select name="HighCaloricFood" required>
+                    <option value="">Select option</option>
+                    <option>yes</option>
+                    <option>no</option>
+                </select>
+            </div>
 
-        <label>High caloric food consumption</label>
-        <select name="HighCaloricFood">
-            <option>yes</option>
-            <option>no</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">🥗</span>Vegetable consumption</label>
+                <select name="Vegetables" required>
+                    <option value="">Select frequency</option>
+                    <option>never</option>
+                    <option>sometimes</option>
+                    <option>always</option>
+                </select>
+            </div>
 
-        <label>Vegetable consumption</label>
-        <select name="Vegetables">
-            <option>never</option>
-            <option>sometimes</option>
-            <option>always</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">🍽️</span>Main meals per day</label>
+                <select name="MainMeals" required>
+                    <option value="">Select option</option>
+                    <option>1-2</option>
+                    <option>3</option>
+                    <option>more than 3</option>
+                </select>
+            </div>
 
-        <label>Main meals</label>
-        <select name="MainMeals">
-            <option>1-2</option>
-            <option>3</option>
-            <option>more than 3</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">🍪</span>Snacks consumption</label>
+                <select name="Snacks" required>
+                    <option value="">Select frequency</option>
+                    <option>no</option>
+                    <option>sometimes</option>
+                    <option>frequently</option>
+                    <option>always</option>
+                </select>
+            </div>
 
-        <label>Snacks</label>
-        <select name="Snacks">
-            <option>no</option>
-            <option>sometimes</option>
-            <option>frequently</option>
-            <option>always</option>
-        </select>
+            <div class="section-divider"></div>
+            <div class="section-title">🚭 Lifestyle Habits</div>
 
-        <label>Smoking</label>
-        <select name="Smoking">
-            <option>yes</option>
-            <option>no</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">🚬</span>Smoking</label>
+                <select name="Smoking" required>
+                    <option value="">Select option</option>
+                    <option>yes</option>
+                    <option>no</option>
+                </select>
+            </div>
 
-        <label>Alcohol</label>
-        <select name="Alcohol">
-            <option>I do not drink</option>
-            <option>sometimes</option>
-            <option>frequently</option>
-            <option>always</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">🍷</span>Alcohol consumption</label>
+                <select name="Alcohol" required>
+                    <option value="">Select frequency</option>
+                    <option>I do not drink</option>
+                    <option>sometimes</option>
+                    <option>frequently</option>
+                    <option>always</option>
+                </select>
+            </div>
 
-        <label>Daily water intake</label>
-        <select name="Water">
-            <option>Between 1 and 2 L</option>
-            <option>More than 2 L</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">💧</span>Daily water intake</label>
+                <select name="Water" required>
+                    <option value="">Select option</option>
+                    <option>Between 1 and 2 L</option>
+                    <option>More than 2 L</option>
+                </select>
+            </div>
 
-        <label>Monitor calories</label>
-        <select name="Monitor">
-            <option>yes</option>
-            <option>no</option>
-        </select>
+            <div class="section-divider"></div>
+            <div class="section-title">💪 Physical Activity</div>
 
-        <label>Physical exercise</label>
-        <select name="Exercise">
-            <option>I do not have</option>
-            <option>1 or 2 days</option>
-            <option>2 or 4 days</option>
-            <option>4 or 5 days</option>
-            <option>almost every day</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">📊</span>Monitor calories</label>
+                <select name="Monitor" required>
+                    <option value="">Select option</option>
+                    <option>yes</option>
+                    <option>no</option>
+                </select>
+            </div>
 
-        <label>Device usage duration</label>
-        <select name="Devices">
-            <option>0-2 hours</option>
-            <option>3-5 hours</option>
-            <option>more than 5 hours</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">🏃</span>Physical exercise frequency</label>
+                <select name="Exercise" required>
+                    <option value="">Select frequency</option>
+                    <option>I do not have</option>
+                    <option>1 or 2 days</option>
+                    <option>2 or 4 days</option>
+                    <option>4 or 5 days</option>
+                    <option>almost every day</option>
+                </select>
+            </div>
 
-        <label>Transportation</label>
-        <select name="Transport">
-            <option>car</option>
-            <option>motorcycle</option>
-            <option>public</option>
-            <option>walking</option>
-        </select>
+            <div class="form-group">
+                <label><span class="icon">📱</span>Device usage duration</label>
+                <select name="Devices" required>
+                    <option value="">Select duration</option>
+                    <option>0-2 hours</option>
+                    <option>3-5 hours</option>
+                    <option>more than 5 hours</option>
+                </select>
+            </div>
 
-        <button type="submit">Predict</button>
-    </form>
+            <div class="form-group">
+                <label><span class="icon">🚗</span>Transportation method</label>
+                <select name="Transport" required>
+                    <option value="">Select method</option>
+                    <option>car</option>
+                    <option>motorcycle</option>
+                    <option>public</option>
+                    <option>walking</option>
+                </select>
+            </div>
 
-    {% if result %}
-    <h3>{{ result }}</h3>
-    {% endif %}
-</div>
+            <button type="submit" class="submit-btn">
+                🔮 Predict Obesity Level
+            </button>
+        </form>
 
+        {% if result %}
+        <div class="result-container">
+            <h3>📊 Prediction Result</h3>
+            <div class="result-text">{{ result }}</div>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>
